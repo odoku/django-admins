@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
 
@@ -25,6 +26,10 @@ class Tag(models.Model):
         return self.name
 
 
+def article_mainvisual_upload_to(instance, filename):
+    return filename
+
+
 class Article(models.Model):
     user = models.ForeignKey(
         'accounts.User',
@@ -43,8 +48,12 @@ class Article(models.Model):
         related_name='articles',
     )
 
+    main_visual = models.ImageField(
+        'メインビジュアル',
+        upload_to=article_mainvisual_upload_to,
+    )
     title = models.CharField('タイトル', max_length=50)
-    body = models.TextField('内容')
+    body = RichTextUploadingField('内容')
 
     created_at = models.DateTimeField('作成日時', auto_now_add=True)
     modified_at = models.DateTimeField('更新日時', auto_now=True)
