@@ -18,7 +18,9 @@ class CategoryAdmin(ModelAdmin):
 
 @register(Article)
 class ArticleAdmin(ModelAdmin):
-    list_display = ('pk', 'title', 'user', 'created_at', 'modified_at')
+    list_display = ('id', 'title', 'user', 'created_at', 'modified_at')
+    list_filter = ('category',)
+    search_fields = ('title', 'user__username')
     inlines = [CommentInline]
 
     def save_model(self, request, obj, form, change):
